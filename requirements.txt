@@ -1,0 +1,5 @@
+openpyxl
+xlrd
+pandas
+pyarrow
+tk
