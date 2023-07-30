@@ -136,7 +136,7 @@ class App(Tk):
         self.config(menu=menubar)
 
         filter_frame = Frame(self)
-        filter_frame.pack(pady = 5, padx = 5)
+        filter_frame.pack(padx = 5, pady = 5)
 
         self.where_label = Label(filter_frame, text = 'Where:', width = 22)
         self.where_label.grid(row = 0, column = 0)
@@ -239,7 +239,7 @@ class App(Tk):
 
                 self.grid_table.pack()
 
-                self.status_bar.set(f"Registros: {len(df)}")
+                self.status_bar.variable.set(f"Registros: {len(df)}")
             else:
                 messagebox.showerror(message="El archivo no tiene datos para mostrar", title="Error")
         else:
