@@ -138,7 +138,7 @@ class App(Tk):
         filter_frame = Frame(self)
         filter_frame.pack(padx = 5, pady = 5)
 
-        self.where_label = Label(filter_frame, text = 'Where:', width = 22)
+        self.where_label = Label(filter_frame, text = 'Where:', anchor=W, width = 22)
         self.where_label.grid(row = 0, column = 0)
         
         self.btn_aceptar = ttk.Button(filter_frame, text = 'Filtrar', width=10)
