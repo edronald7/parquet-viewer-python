@@ -1,134 +1,34 @@
-2023-07-27 15:22:26,463 | root | INFO | Configuración iniciada
-2023-07-27 15:23:12,670 | root | INFO | Configuración iniciada
-2023-07-27 15:24:36,004 | root | INFO | Configuración iniciada
-2023-07-27 15:24:52,457 | root | INFO | Configuración iniciada
-2023-07-27 15:24:52,476 | root | INFO | ###################
-2023-07-27 15:24:52,477 | root | INFO | Aplicación iniciada
-2023-07-27 15:26:06,417 | root | INFO | Configuración iniciada
-2023-07-27 15:26:06,432 | root | INFO | ###################
-2023-07-27 15:26:06,432 | root | INFO | Aplicación iniciada
-2023-07-27 15:29:49,064 | root | INFO | Configuración iniciada
-2023-07-27 15:29:49,085 | root | INFO | ###################
-2023-07-27 15:29:49,085 | root | INFO | Aplicación iniciada
-2023-07-27 15:34:02,706 | root | INFO | Configuración iniciada
-2023-07-27 15:34:02,728 | root | INFO | ###################
-2023-07-27 15:34:02,728 | root | INFO | Aplicación iniciada
-2023-07-27 15:37:17,191 | root | INFO | Configuración iniciada
-2023-07-27 15:37:17,213 | root | INFO | ###################
-2023-07-27 15:37:17,213 | root | INFO | Aplicación iniciada
-2023-07-27 15:38:21,990 | root | INFO | Configuración iniciada
-2023-07-27 15:38:22,009 | root | INFO | ###################
-2023-07-27 15:38:22,009 | root | INFO | Aplicación iniciada
-2023-07-27 15:56:30,214 | root | INFO | Configuración iniciada
-2023-07-27 15:58:48,121 | root | INFO | Configuración iniciada
-2023-07-27 15:58:52,123 | root | INFO | Configuración iniciada
-2023-07-27 15:59:55,462 | root | INFO | Configuración iniciada
-2023-07-27 16:00:25,583 | root | INFO | Configuración iniciada
-2023-07-27 16:00:25,614 | root | INFO | ###################
-2023-07-27 16:00:25,614 | root | INFO | Aplicación iniciada
-2023-07-27 16:03:02,939 | root | INFO | Configuración iniciada
-2023-07-27 16:03:02,965 | root | INFO | ###################
-2023-07-27 16:03:02,965 | root | INFO | Aplicación iniciada
-2023-07-27 16:12:14,257 | root | INFO | Configuración iniciada
-2023-07-27 16:12:14,279 | root | INFO | ###################
-2023-07-27 16:12:14,279 | root | INFO | Aplicación iniciada
-2023-07-27 16:13:44,573 | root | INFO | Configuración iniciada
-2023-07-27 16:13:44,591 | root | INFO | ###################
-2023-07-27 16:13:44,591 | root | INFO | Aplicación iniciada
-2023-07-27 16:14:18,745 | root | INFO | Configuración iniciada
-2023-07-27 16:14:18,767 | root | INFO | ###################
-2023-07-27 16:14:18,767 | root | INFO | Aplicación iniciada
-2023-07-27 16:15:25,557 | root | INFO | Configuración iniciada
-2023-07-27 16:15:25,576 | root | INFO | ###################
-2023-07-27 16:15:25,576 | root | INFO | Aplicación iniciada
-2023-07-27 16:16:14,331 | root | INFO | Configuración iniciada
-2023-07-27 16:16:26,560 | root | INFO | Configuración iniciada
-2023-07-27 16:16:26,582 | root | INFO | ###################
-2023-07-27 16:16:26,582 | root | INFO | Aplicación iniciada
-2023-07-27 16:18:07,112 | root | INFO | Configuración iniciada
-2023-07-27 16:18:24,614 | root | INFO | Configuración iniciada
-2023-07-27 16:19:11,566 | root | INFO | Configuración iniciada
-2023-07-27 16:19:11,591 | root | INFO | ###################
-2023-07-27 16:19:11,591 | root | INFO | Aplicación iniciada
-2023-07-27 16:21:57,682 | root | INFO | Configuración iniciada
-2023-07-27 16:23:24,819 | root | INFO | Configuración iniciada
-2023-07-27 16:24:26,759 | root | INFO | Configuración iniciada
-2023-07-27 16:24:26,776 | root | INFO | ###################
-2023-07-27 16:24:26,777 | root | INFO | Aplicación iniciada
-2023-07-27 16:26:18,215 | root | INFO | Configuración iniciada
-2023-07-27 16:26:18,234 | root | INFO | ###################
-2023-07-27 16:26:18,234 | root | INFO | Aplicación iniciada
-2023-07-27 16:28:14,068 | root | INFO | Configuración iniciada
-2023-07-27 16:28:14,086 | root | INFO | ###################
-2023-07-27 16:28:14,086 | root | INFO | Aplicación iniciada
-2023-07-27 16:29:36,763 | root | INFO | Configuración iniciada
-2023-07-27 16:29:36,782 | root | INFO | ###################
-2023-07-27 16:29:36,782 | root | INFO | Aplicación iniciada
-2023-07-27 16:33:11,227 | root | INFO | Configuración iniciada
-2023-07-27 16:33:11,247 | root | INFO | ###################
-2023-07-27 16:33:11,247 | root | INFO | Aplicación iniciada
-2023-07-27 16:34:35,660 | root | INFO | Configuración iniciada
-2023-07-27 16:34:35,679 | root | INFO | ###################
-2023-07-27 16:34:35,679 | root | INFO | Aplicación iniciada
-2023-07-27 16:37:27,897 | root | INFO | Configuración iniciada
-2023-07-27 16:37:27,919 | root | INFO | ###################
-2023-07-27 16:37:27,919 | root | INFO | Aplicación iniciada
-2023-07-27 16:38:12,008 | root | INFO | Configuración iniciada
-2023-07-27 16:38:12,030 | root | INFO | ###################
-2023-07-27 16:38:12,030 | root | INFO | Aplicación iniciada
-2023-07-27 16:39:18,966 | root | INFO | Configuración iniciada
-2023-07-27 16:39:18,985 | root | INFO | ###################
-2023-07-27 16:39:18,985 | root | INFO | Aplicación iniciada
-2023-07-27 16:40:30,237 | root | INFO | Configuración iniciada
-2023-07-27 16:40:30,257 | root | INFO | ###################
-2023-07-27 16:40:30,257 | root | INFO | Aplicación iniciada
-2023-07-27 16:55:14,545 | root | INFO | Configuración iniciada
-2023-07-27 16:55:14,565 | root | INFO | ###################
-2023-07-27 16:55:14,565 | root | INFO | Aplicación iniciada
-2023-07-27 16:59:53,998 | root | INFO | Configuración iniciada
-2023-07-27 17:00:18,869 | root | INFO | Configuración iniciada
-2023-07-27 17:00:18,890 | root | INFO | ###################
-2023-07-27 17:00:18,890 | root | INFO | Aplicación iniciada
-2023-07-27 17:06:22,875 | root | INFO | Configuración iniciada
-2023-07-27 17:06:22,892 | root | INFO | ###################
-2023-07-27 17:06:22,892 | root | INFO | Aplicación iniciada
-2023-07-27 17:12:28,622 | root | INFO | Configuración iniciada
-2023-07-27 17:12:28,640 | root | INFO | ###################
-2023-07-27 17:12:28,640 | root | INFO | Aplicación iniciada
-2023-07-27 17:16:58,567 | root | INFO | Configuración iniciada
-2023-07-27 17:16:58,590 | root | INFO | ###################
-2023-07-27 17:16:58,591 | root | INFO | Aplicación iniciada
-2023-07-27 17:22:38,357 | root | INFO | Configuración iniciada
-2023-07-27 17:22:38,376 | root | INFO | ###################
-2023-07-27 17:22:38,376 | root | INFO | Aplicación iniciada
-2023-07-27 17:25:01,541 | root | INFO | Configuración iniciada
-2023-07-27 17:25:01,568 | root | INFO | ###################
-2023-07-27 17:25:01,568 | root | INFO | Aplicación iniciada
-2023-07-27 17:27:48,516 | root | INFO | Configuración iniciada
-2023-07-27 17:27:48,542 | root | INFO | ###################
-2023-07-27 17:27:48,543 | root | INFO | Aplicación iniciada
-2023-07-27 17:35:58,248 | root | INFO | Configuración iniciada
-2023-07-27 17:35:58,285 | root | INFO | ###################
-2023-07-27 17:35:58,285 | root | INFO | Aplicación iniciada
-2023-07-27 17:40:41,470 | root | INFO | Configuración iniciada
-2023-07-27 17:40:41,510 | root | INFO | ###################
-2023-07-27 17:40:41,511 | root | INFO | Aplicación iniciada
-2023-07-29 20:21:43,478 | root | INFO | Configuración iniciada
-2023-07-29 20:21:43,527 | root | INFO | ###################
-2023-07-29 20:21:43,527 | root | INFO | Aplicación iniciada
-2023-07-29 20:25:01,678 | root | INFO | Configuración iniciada
-2023-07-29 20:25:01,696 | root | INFO | ###################
-2023-07-29 20:25:01,696 | root | INFO | Aplicación iniciada
-2023-07-29 20:34:33,666 | root | INFO | Configuración iniciada
-2023-07-29 20:34:47,669 | root | INFO | Configuración iniciada
-2023-07-29 20:34:47,692 | root | INFO | ###################
-2023-07-29 20:34:47,692 | root | INFO | Aplicación iniciada
-2023-07-29 20:36:02,448 | root | INFO | Configuración iniciada
-2023-07-29 20:36:02,466 | root | INFO | ###################
-2023-07-29 20:36:02,466 | root | INFO | Aplicación iniciada
-2023-07-29 20:37:06,823 | root | INFO | Configuración iniciada
-2023-07-29 20:37:06,843 | root | INFO | ###################
-2023-07-29 20:37:06,843 | root | INFO | Aplicación iniciada
-2023-07-31 12:59:31,666 | root | INFO | Configuración iniciada
-2023-07-31 12:59:31,713 | root | INFO | ###################
-2023-07-31 12:59:31,713 | root | INFO | Aplicación iniciada
+2024-03-05 10:43:27,663 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 10:47:20,048 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 10:48:40,519 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 10:48:41,091 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 10:48:41,091 | root | INFO | Registros: 10000
+2024-03-05 10:48:41,091 | root | INFO | Columnas: Index(['name', 'lastname', 'email', 'birth_date', 'country', 'id'], dtype='object')
+2024-03-05 11:44:41,446 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:44:41,645 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:44:41,646 | root | INFO | Registros: 10000
+2024-03-05 11:44:41,646 | root | INFO | Columnas: Index(['name', 'lastname', 'email', 'birth_date', 'country', 'id'], dtype='object')
+2024-03-05 11:51:11,946 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:51:12,143 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:51:12,143 | root | INFO | Registros: 10000
+2024-03-05 11:51:12,144 | root | INFO | Columnas: Index(['name', 'lastname', 'email', 'birth_date', 'country', 'id'], dtype='object')
+2024-03-05 11:52:55,628 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:52:55,695 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:52:55,695 | root | INFO | Registros: 10000
+2024-03-05 11:52:55,695 | root | INFO | Columnas: Index(['name', 'lastname', 'email', 'birth_date', 'country', 'id'], dtype='object')
+2024-03-05 11:54:06,745 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:54:06,814 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:54:06,815 | root | INFO | Registros: 10000
+2024-03-05 11:54:06,815 | root | INFO | Columnas: ['name', 'lastname', 'email', 'birth_date', 'country', 'id']
+2024-03-05 11:56:24,209 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:56:24,279 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 11:56:24,280 | root | INFO | Registros: 10000
+2024-03-05 11:56:24,280 | root | INFO | Columnas: ['name', 'lastname', 'email', 'birth_date', 'country', 'id']
+2024-03-05 12:09:23,132 | root | INFO | Archivo seleccionado: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 12:09:23,333 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 12:09:23,333 | root | INFO | Registros: 10000
+2024-03-05 12:09:23,333 | root | INFO | Columnas: ['name', 'lastname', 'email', 'birth_date', 'country', 'id']
+2024-03-05 12:21:20,864 | root | INFO | Leyendo: datasample.parquet
+2024-03-05 12:21:20,937 | root | INFO | Archivo parquet leído: /Users/ronald/Work/gitrepo/parquet-viewer-python/datasample/datasample.parquet
+2024-03-05 12:21:20,937 | root | INFO | Registros: 10000
+2024-03-05 12:21:20,937 | root | INFO | Columnas: ['name', 'lastname', 'email', 'birth_date', 'country', 'id']
