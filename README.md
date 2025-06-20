@@ -2,6 +2,9 @@
 
 A desktop utility for data engineers and analysts to efficiently explore data lake files, analyze and compare schemas, and convert/export data to various formats—all from your local machine.
 
+![Application Parquet Viewer](assets/images/parquet-viewer-python.png)
+
+
 ## Features
 **Version 1.0.0**  
 This initial release provides the following capabilities:

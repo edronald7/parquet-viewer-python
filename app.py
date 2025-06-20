@@ -37,8 +37,8 @@ class Main(QtWidgets.QMainWindow):
             self.setWindowIcon(QIcon(icon_path))
 
         # Set window title
-        self.title = "Parquet Viewer"
-        self.title_add = " - Python Version"
+        self.title = "Application"
+        self.title_add = " - Parquet Viewer Python"
         self.setWindowTitle(self.title + self.title_add)
         self.set_status("No records")
         self.path_file = None
@@ -558,8 +558,19 @@ class Main(QtWidgets.QMainWindow):
         about_box = QtWidgets.QMessageBox()
         about_box.setWindowTitle("About")
         about_box.setText("Parquet Viewer Python")
-        about_box.setInformativeText("Desktop Version 1.0.0\n\nDeveloped by: edronald7@gmail.com\n\nThis application is useful for analyzing data lake files.\n\nIt allows you to open, view, and export data files in various formats such as Parquet, CSV, and TXT.\n\nYou can also extract and export schemas to Excel and JSON formats, then compare two files.")
-        about_box.setIcon(QtWidgets.QMessageBox.Information)
+        text_about = "Desktop Version 1.0.0\n\nDeveloped by: dataengi.net\nedronald7@gmail.com\n\n"+\
+                    "This application is designed to facilitate the analysis of data lake files.\n\n"+\
+                    "It enables you to open, view, and export data in multiple formats, including Parquet, CSV, and TXT.\n"+\
+                    "Additionally, you can extract file schemas and export them to Excel or JSON formats.\n"+\
+                    "The application also provides functionality to compare the structure and content of two files."
+        about_box.setInformativeText(text_about)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        icon_path = os.path.join(script_dir, 'assets/icon.png')
+        if os.path.exists(icon_path):
+            about_box.setIconPixmap(QIcon(icon_path).pixmap(64, 64))
+        else:
+            about_box.setIcon(QtWidgets.QMessageBox.Information)
+        about_box.setWindowIcon(QIcon(icon_path))
         about_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
         about_box.exec_()
 
