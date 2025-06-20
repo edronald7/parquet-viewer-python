@@ -1,0 +1,5 @@
+app:
+  files:
+    txt-auto-infer-types: true
+    txt-encodings: utf-8, iso-8859-1, windows-1252, latin1, ascii
+    txt-delimiter: "|"  

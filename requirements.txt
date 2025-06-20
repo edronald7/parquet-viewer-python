@@ -1,0 +1,6 @@
+pyyaml
+pyqt5
+numpy
+pandas
+pyarrow
+openpyxl
