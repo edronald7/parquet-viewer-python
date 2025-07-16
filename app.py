@@ -558,7 +558,7 @@ class Main(QtWidgets.QMainWindow):
         about_box = QtWidgets.QMessageBox()
         about_box.setWindowTitle("About")
         about_box.setText("Parquet Viewer Python")
-        text_about = "Desktop Version 1.0.0\n\nDeveloped by: dataengi.net\nedronald7@gmail.com\n\n"+\
+        text_about = "Desktop Version 1.0.0\n\nDeveloped by: edronald7@gmail.com\nWebsite: dataengi.net\n\n"+\
                     "This application is designed to facilitate the analysis of data lake files.\n\n"+\
                     "It enables you to open, view, and export data in multiple formats, including Parquet, CSV, and TXT.\n"+\
                     "Additionally, you can extract file schemas and export them to Excel or JSON formats.\n"+\

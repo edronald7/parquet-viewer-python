@@ -12,6 +12,9 @@ This initial release provides the following capabilities:
 - **Data Export**: Export data samples in Gzip or Parquet formats, ideal for extracting the first or last records for further analysis.
 - **Schema Management**: View data schemas, export them to Excel or JSON, and compare two JSON schemas—perfect for tables with hundreds or thousands of columns to identify differences.
 
+![Schema Viewer](assets/images/parquet-viewer-schema.png)
+
+
 ## Installation
 
 ### Prerequisites
@@ -54,7 +57,7 @@ Or run it manually:
 Contributions are welcome! Please submit issues or pull requests to help improve the project. For major changes, please open an issue first to discuss your ideas.
 
 ## About us
-WebSite: https://dataengi.net
+WebSite: https://dataengi.net  
 Github: https://github.com/edronald7
 
 ## License
