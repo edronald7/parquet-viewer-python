@@ -136,6 +136,17 @@ class Main(QtWidgets.QMainWindow):
             layout_enc.addWidget(option_enc)
             layout.addLayout(layout_enc)
 
+            # Create the Quoting option
+            layout_quoting = QtWidgets.QHBoxLayout()
+            label_quoting = QtWidgets.QLabel("Quoting:")
+            layout_quoting.addWidget(label_quoting)
+            option_quoting = QtWidgets.QComboBox()
+            option_quoting.addItems(['None', 'Quote'])
+            option_quoting.setCurrentText('None')
+            option_quoting.setToolTip("Select the quoting option, Quote: fields are enclosed in double quotes (\"), None: no quoting.")
+            layout_quoting.addWidget(option_quoting)
+            layout.addLayout(layout_quoting)
+
             # Create the fourth QCheckBox (infer types)
             option_infer = QtWidgets.QCheckBox("Infer types")
             option_infer.setChecked(self.file_auto_infer_types)
@@ -151,8 +162,18 @@ class Main(QtWidgets.QMainWindow):
                 self.file_delimiter = option_sep.currentText()
                 self.file_encoding = option_enc.currentText()
                 self.file_auto_infer_types = option_infer.isChecked()
+                self.file_quoting = option_quoting.currentText()
                 self.path_file = path_file
-                self.dataframe = pd.read_csv(path_file, sep=self.file_delimiter, encoding=self.file_encoding, dtype=None if self.file_auto_infer_types else 'str', compression=compres, header=0 if self.file_has_header else None)
+                self.dataframe = pd.read_csv(
+                    path_file, 
+                    sep=self.file_delimiter, 
+                    encoding=self.file_encoding, 
+                    dtype=None if self.file_auto_infer_types else 'str', 
+                    compression=compres, 
+                    header=0 if self.file_has_header else None,
+                    quoting=0 if self.file_quoting == 'None' else 1,
+                    on_bad_lines='skip'
+                )
 
                 self.set_status_total_records()
                 self.show_data()
