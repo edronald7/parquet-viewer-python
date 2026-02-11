@@ -169,3 +169,6 @@ __pycache__/
 # Run files
 run.bat
 run.sh
+
+# Recent files cache
+config/.recent_files.json

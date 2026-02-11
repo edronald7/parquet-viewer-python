@@ -6,11 +6,16 @@ A desktop utility for data engineers and analysts to efficiently explore data la
 
 
 ## Features
-**Version 1.0.0**  
-This initial release provides the following capabilities:
-- **File Exploration**: Open and visualize Parquet and Gzip (CSV/TXT) files to inspect data content and structure.
-- **Data Export**: Export data samples in Gzip or Parquet formats, ideal for extracting the first or last records for further analysis.
-- **Schema Management**: View data schemas, export them to Excel or JSON, and compare two JSON schemas—perfect for tables with hundreds or thousands of columns to identify differences.
+**Version 2.1.0**  
+This release provides the following capabilities:
+- **File Exploration**: Open and visualize Parquet, CSV, CSV.GZ (Gzip) and TXT files to inspect data content and structure.
+- **Virtual Scrolling**: Efficiently browse large datasets without pagination — powered by a high-performance table model.
+- **Search & Filter**: Instantly filter rows across all columns using the built-in search bar.
+- **Drag & Drop**: Drop files directly into the window to open them.
+- **Recent Files**: Quickly reopen recently viewed files from the *Data File* menu.
+- **Data Export**: Export data samples in CSV, Gzip, or Parquet formats — extract head, tail, random, or all records.
+- **Schema Management**: View data schemas, export them to Excel or JSON, and compare two JSON schemas bidirectionally — ideal for tables with hundreds or thousands of columns.
+- **Keyboard Shortcuts**: `Ctrl+O` open, `Ctrl+W` close, `Ctrl+Q` quit, `Ctrl+E` export, `Ctrl+I` schema view.
 
 ![Schema Viewer](assets/images/parquet-viewer-schema.png)
 
@@ -18,7 +23,7 @@ This initial release provides the following capabilities:
 ## Installation
 
 ### Prerequisites
-- Python 3.x installed on your system.
+- Python 3.9+ installed on your system.
 - Basic familiarity with command-line interfaces.
 
 ### Option 1: Add Dependencies to an Existing Environment
@@ -40,8 +45,7 @@ Run the provided `setup.py` script to set up a virtual environment and install d
    - Generate a launcher script (`.bat` for Windows or `.sh` for Unix-based systems) for easy application startup.
 
 ## Usage
-To launch the application: simply double-click run.bat or run.sh.
-
+To launch the application: simply double-click `run.bat` or `run.sh`.
 
 Or run it manually:
 1. Activate the virtual environment (if using Option 2):
@@ -49,15 +53,30 @@ Or run it manually:
    - On Unix/Linux/Mac: `source venv/bin/activate`
 2. Run the main script:
    ```bash
-   python main.py
+   python app.py
    ```
 3. Follow the on-screen instructions to explore files, export data, or compare schemas.
+
+## Project Structure
+```
+app.py                  # Entry point
+src/
+  main_window.py        # Main UI window
+  pandas_model.py       # QAbstractTableModel for DataFrames
+  workers.py            # QThread background data loading
+  schema.py             # Schema extraction & comparison
+  config.py             # Configuration management
+config/
+  conf.yaml             # Application settings
+assets/
+  layout.ui             # Qt Designer UI layout
+  icon.png              # Application icon
+```
 
 ## Contributing
 Contributions are welcome! Please submit issues or pull requests to help improve the project. For major changes, please open an issue first to discuss your ideas.
 
 ## About us
-WebSite: https://dataengi.net  
 Github: https://github.com/edronald7
 
 ## License
