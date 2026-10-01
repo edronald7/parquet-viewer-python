@@ -3,7 +3,7 @@
 Improvements over the original monolithic app.py
 -------------------------------------------------
 * QTableView + QAbstractTableModel (virtual scrolling, no pagination needed)
-* QSortFilterProxyModel for instant search / filter
+* Search / filter on Enter, computed with pandas on a background thread
 * QThread for background data loading (no UI freeze)
 * Drag & drop file opening
 * Recent files history
@@ -23,13 +23,15 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt, QSortFilterProxyModel
+from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtGui import QIcon, QKeySequence
 
 from src import config
+from src.busy_overlay import BusyOverlay
+from src.filter_help import FilterHelpDialog
 from src.pandas_model import PandasModel, PaginationProxyModel
 from src.schema import compare_schemas, get_schema_df, schema_to_json_dict
-from src.workers import DataLoaderWorker
+from src.workers import DataLoaderWorker, FilterWorker
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +51,19 @@ def _parse_file_info(file_path: str):
         return basename[:-7], 'csv.gz'
     name, ext = os.path.splitext(basename)
     return name, ext.lstrip('.')
+
+
+def _format_size(file_path: str) -> str:
+    """Human readable size of *file_path* (e.g. '1.4 GB')."""
+    try:
+        size = float(os.path.getsize(file_path))
+    except OSError:
+        return "unknown size"
+    for unit in ('bytes', 'KB', 'MB', 'GB'):
+        if size < 1024 or unit == 'GB':
+            return f"{size:,.0f} {unit}" if unit == 'bytes' else f"{size:,.1f} {unit}"
+        size /= 1024
+    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -246,6 +261,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self._setup_recent_files_menu()
 
         self._worker: Optional[DataLoaderWorker] = None
+        # Bumped whenever the data or the search changes, so results of
+        # outdated filter workers are discarded.
+        self._filter_generation: int = 0
+        self._filter_mode: str = FilterWorker.MODE_TEXT
+        self._filter_worker: Optional[FilterWorker] = None
         self._current_load_settings: Dict[str, Any] = {}
 
     # =======================================================================
@@ -267,6 +287,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self._file_ext: Optional[str] = None
 
     def _setup_ui(self) -> None:
+        # Keep the menu bar inside the window; otherwise desktop environments
+        # with a global menu (e.g. KDE Plasma) capture it and it disappears.
+        self.menubar.setNativeMenuBar(False)
+
         icon_path = config.get_icon_path()
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
@@ -277,23 +301,19 @@ class MainWindow(QtWidgets.QMainWindow):
     def _setup_table(self) -> None:
         """Replace the QTableWidget from the .ui with a QTableView + model chain.
 
-        Chain: PandasModel → search proxy → pagination proxy → QTableView
+        Chain: PandasModel → pagination proxy → QTableView
         """
-        # 1. Base model backed by a DataFrame
+        # 1. Base model backed by a DataFrame. Search filtering is applied
+        #    to it directly (see _apply_search), because a proxy filter
+        #    freezes the UI on large data.
         self._model = PandasModel()
 
-        # 2. Search / filter proxy (operates on ALL rows)
-        self._search_proxy = QSortFilterProxyModel()
-        self._search_proxy.setSourceModel(self._model)
-        self._search_proxy.setFilterCaseSensitivity(Qt.CaseInsensitive)
-        self._search_proxy.setFilterKeyColumn(-1)  # search all columns
-
-        # 3. Pagination proxy (shows one page of filtered results)
+        # 2. Pagination proxy (shows one page of filtered results)
         self._page_proxy = PaginationProxyModel()
-        self._page_proxy.setSourceModel(self._search_proxy)
+        self._page_proxy.setSourceModel(self._model)
         self._page_proxy.set_page_size(self.spinLimit.value())
 
-        # 4. QTableView
+        # 3. QTableView
         self._table_view = QtWidgets.QTableView()
         self._table_view.setModel(self._page_proxy)
         self._table_view.setAlternatingRowColors(True)
@@ -308,11 +328,30 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Add search bar into the status area
         self._search_input = QtWidgets.QLineEdit()
-        self._search_input.setPlaceholderText("Search / Filter...")
-        self._search_input.setMaximumWidth(250)
+        self._search_input.setPlaceholderText("Text or SQL filter + Enter")
+        self._search_input.setToolTip(
+            "Press Enter to filter. Clear the field to show all rows again.\n\n"
+            "Plain text: rows containing it in any column.\n"
+            "SQL condition (like after WHERE), e.g.:\n"
+            "  pais = 'US' and codigo like 'US%'\n\n"
+            "Click ? or press F1 for the full syntax and examples.")
+        self._search_input.setMinimumWidth(250)
+        self._search_input.setMaximumWidth(500)
         self._search_input.setClearButtonEnabled(True)
-        self._search_input.textChanged.connect(self._on_search_changed)
+        self._search_input.returnPressed.connect(self._apply_search)
+        self._search_input.textChanged.connect(self._on_search_text_changed)
         self.horizontalStatus.insertWidget(2, self._search_input)
+
+        # "?" button opening the filter help panel
+        self._filter_help: Optional[FilterHelpDialog] = None
+        btn_help = QtWidgets.QToolButton()
+        btn_help.setText("?")
+        btn_help.setToolTip("Search / filter syntax and examples (F1)")
+        btn_help.clicked.connect(self._show_filter_help)
+        self.horizontalStatus.insertWidget(3, btn_help)
+
+        # "Please wait" overlay for loading and filtering large files
+        self._busy = BusyOverlay(self.centralWidget())
 
     def _setup_connections(self) -> None:
         # File menu
@@ -340,6 +379,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionCompareJSONSchemas.triggered.connect(self._compare_json_schemas)
 
         # Help
+        self._action_filter_help = QtWidgets.QAction("Search / Filter Syntax", self)
+        self._action_filter_help.triggered.connect(self._show_filter_help)
+        self.menuHelp.insertAction(self.actionAbout, self._action_filter_help)
         self.actionAbout.triggered.connect(self._show_about)
 
     def _setup_shortcuts(self) -> None:
@@ -349,6 +391,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionExtractExportData.setShortcut(QKeySequence("Ctrl+E"))
         self.actionExportParquet.setShortcut(QKeySequence("Ctrl+Shift+E"))
         self.actionSchemaView.setShortcut(QKeySequence("Ctrl+I"))
+        self._action_filter_help.setShortcut(QKeySequence("F1"))
 
     def _setup_drag_drop(self) -> None:
         self.setAcceptDrops(True)
@@ -458,6 +501,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self._set_status(f"Loading {os.path.basename(path)}...")
         self.progressBar.setRange(0, 0)  # indeterminate
+        self._busy.start(
+            "Loading file, please wait...",
+            f"{os.path.basename(path)} ({_format_size(path)})\n"
+            "Large files can take a while to load.")
 
         # Ensure any previous worker is finished
         if self._worker is not None and self._worker.isRunning():
@@ -471,15 +518,19 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _on_data_loaded(self, df: pd.DataFrame) -> None:
         """Callback executed on the main thread when data is ready."""
+        self._busy.stop()
         # Assign generic headers when the file has no header row
         if not self._has_header and not df.empty:
             df.columns = [f'col{i}' for i in range(1, len(df.columns) + 1)]
 
+        self._filter_generation += 1  # discard any in-flight filter
+        self._cancel_running_filter()
         self._model.update_dataframe(df)
+        self._update_filter_help_columns()
 
         # Reset sort to original file order (no column sorted)
         self._table_view.horizontalHeader().setSortIndicator(-1, Qt.AscendingOrder)
-        self._search_proxy.sort(-1)
+        self._page_proxy.sort(-1)
 
         # Reset pagination and show first page
         self._search_input.clear()
@@ -501,6 +552,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self._refresh_recent_menu()
 
     def _on_load_error(self, message: str) -> None:
+        self._busy.stop()
         self.progressBar.setRange(0, 100)
         self.progressBar.setValue(0)
         self._set_status("Error loading file")
@@ -553,10 +605,125 @@ class MainWindow(QtWidgets.QMainWindow):
     #  SEARCH / FILTER
     # =======================================================================
 
-    def _on_search_changed(self, text: str) -> None:
-        self._search_proxy.setFilterFixedString(text)
-        # Reset to first page after filter change
+    def _on_search_text_changed(self, text: str) -> None:
+        """Show all rows again as soon as the search field is emptied."""
+        if not text:
+            self._apply_search()
+
+    def _apply_search(self) -> None:
+        """Filter rows containing the search text (triggered by Enter)."""
+        text = self._search_input.text()
+        self._filter_generation += 1
+        self._cancel_running_filter()
+        df = self._model.dataframe
+
+        if not text or df.empty:
+            self._busy.stop()
+            self._model.clear_row_filter()
+            self._on_filter_applied()
+            return
+
+        self._set_status(f"Filtering {len(df):,} records...")
+        self.progressBar.setRange(0, 0)  # indeterminate
+        self._busy.start("Filtering, please wait...",
+                         f"Searching {len(df):,} records.",
+                         on_cancel=self._cancel_search)
+
+        worker = FilterWorker(df, text, self._filter_generation, parent=self)
+        worker.result.connect(self._on_filter_result)
+        worker.error.connect(self._on_filter_error)
+        worker.progress.connect(self._on_filter_progress)
+        self._filter_worker = worker
+        worker.finished.connect(worker.deleteLater)
+        worker.start()
+
+    def _on_filter_result(self, generation: int, positions, mode: str) -> None:
+        if generation != self._filter_generation:
+            return  # stale result: data or search changed meanwhile
+        self._busy.stop()
+        self._filter_mode = mode
+        self._model.set_row_filter(positions)
+        self._on_filter_applied()
+
+    def _on_filter_error(self, generation: int, message: str) -> None:
+        if generation != self._filter_generation:
+            return
+        self._busy.stop()
+        self.progressBar.setRange(0, 100)
+        self.progressBar.setValue(0)
+        self._set_status("Error filtering data")
+        QtWidgets.QMessageBox.critical(
+            self, 'Error', f"Could not filter data:\n{message}")
+
+    def _on_filter_progress(self, generation: int, percent: int) -> None:
+        if generation != self._filter_generation:
+            return
+        self._busy.set_progress(percent)
+        self.progressBar.setRange(0, 100)
+        self.progressBar.setValue(percent)
+
+    def _cancel_running_filter(self) -> None:
+        """Stop the background filter, if any (its result is not used)."""
+        if self._filter_worker is not None:
+            try:
+                self._filter_worker.cancel()
+            except RuntimeError:  # already finished and deleted
+                pass
+            self._filter_worker = None
+
+    def _cancel_search(self) -> None:
+        """Stop the running filter; the previous rows stay visible."""
+        self._filter_generation += 1
+        self._cancel_running_filter()
+        self._set_status("Filter cancelled")
+        self.progressBar.setRange(0, 100)
+        self._update_pagination_info()
+
+    def _show_filter_help(self) -> None:
+        """Show the floating filter help panel (created on first use)."""
+        if self._filter_help is None:
+            self._filter_help = FilterHelpDialog(self, self._insert_search_text)
+            self._update_filter_help_columns()
+        self._filter_help.show()
+        self._filter_help.raise_()
+        self._filter_help.activateWindow()
+
+    def _update_filter_help_columns(self) -> None:
+        if self._filter_help is not None:
+            df = self._model.dataframe
+            self._filter_help.set_columns(
+                [(str(c), str(t)) for c, t in df.dtypes.items()])
+
+    def _insert_search_text(self, text: str, replace: bool) -> None:
+        """Put *text* into the search field (used by the help panel).
+
+        The filter is not applied: the user reviews it and presses Enter.
+        """
+        if replace:
+            self._search_input.setText(text)
+        else:
+            current = self._search_input.text()
+            pos = self._search_input.cursorPosition()
+            if pos > 0 and not current[pos - 1].isspace():
+                text = ' ' + text
+            if pos < len(current) and not current[pos].isspace():
+                text += ' '
+            self._search_input.insert(text)
+        self._search_input.activateWindow()
+        self._search_input.setFocus()
+
+    def _on_filter_applied(self) -> None:
+        """Reset to first page and update status after the filter changed."""
         self._page_proxy.first_page()
+        total = len(self._model.dataframe)
+        if self._model.is_filtered:
+            self._set_status(
+                f"Filtered ({self._filter_mode}): "
+                f"{self._model.rowCount():,} of {total:,} records")
+        else:
+            self._set_status(f"Total records: {total:,}")
+        self.progressBar.setRange(0, 100)
+        self.progressBar.setValue(0)
         self._update_pagination_info()
 
     # =======================================================================
@@ -564,7 +731,11 @@ class MainWindow(QtWidgets.QMainWindow):
     # =======================================================================
 
     def _clear_data(self) -> None:
+        self._filter_generation += 1  # discard any in-flight filter
+        self._cancel_running_filter()
+        self._busy.stop()
         self._model.clear()
+        self._update_filter_help_columns()
         self._search_input.clear()
         self._page_proxy.first_page()
         self._path_file = None
@@ -583,6 +754,17 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.No)
         if reply == QtWidgets.QMessageBox.Yes:
             self.close()
+
+    def closeEvent(self, event) -> None:  # noqa: N802
+        # Destroying a running QThread aborts the process, so let any
+        # background load / filter finish (with the window already hidden).
+        self._cancel_running_filter()
+        running = [t for t in self.findChildren(QThread) if t.isRunning()]
+        if running:
+            self.hide()
+            for thread in running:
+                thread.wait()
+        super().closeEvent(event)
 
     # =======================================================================
     #  DRAG & DROP
